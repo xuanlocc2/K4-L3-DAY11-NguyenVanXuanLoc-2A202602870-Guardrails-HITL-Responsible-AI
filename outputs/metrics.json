@@ -1,0 +1,17 @@
+{
+  "total_requests": 38,
+  "blocked_requests": 20,
+  "block_rate": 0.5263157894736842,
+  "rate_limit_hits": 5,
+  "judge_checks": 0,
+  "judge_fails": 0,
+  "judge_fail_rate": 0.0,
+  "alerts": [
+    {
+      "metric": "block_rate",
+      "value": 0.5263157894736842,
+      "threshold": 0.5,
+      "message": "High block rate — possible attack campaign"
+    }
+  ]
+}

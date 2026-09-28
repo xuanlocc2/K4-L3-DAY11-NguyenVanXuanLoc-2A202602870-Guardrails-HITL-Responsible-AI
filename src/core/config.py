@@ -36,7 +36,9 @@ PROVIDER_OPENROUTER = "openrouter"
 
 # --- Blue Team (LOCKED) ---
 BLUE_PROVIDER = PROVIDER_OPENROUTER
-BLUE_MODEL = "liquid/lfm-2.5-2.6b"
+# ponytail: OpenRouter trả 404 cho "liquid/lfm-2.5-2.6b" (no endpoints), chỉ bản
+# ":free" còn phục vụ — tạm trỏ sang bản free, đổi lại khi endpoint gốc hoạt động.
+BLUE_MODEL = "liquid/lfm-2.5-2.6b:free"
 OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
 DEFAULT_OPENROUTER_MODEL = BLUE_MODEL  # alias
 

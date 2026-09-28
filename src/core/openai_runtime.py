@@ -62,14 +62,25 @@ class OpenAIRunner:
             return block_msg
 
         client = self._client()
-        completion = client.chat.completions.create(
-            model=self.model,
-            messages=[
-                {"role": "system", "content": agent.instruction},
-                {"role": "user", "content": user_message},
-            ],
-            temperature=self.temperature,
-        )
+        # ponytail: OpenRouter free-tier model throttles bursts; fixed 3-try
+        # backoff, upgrade to a proper queue/backoff lib if this recurs.
+        import time as _time
+        completion = None
+        for attempt in range(3):
+            try:
+                completion = client.chat.completions.create(
+                    model=self.model,
+                    messages=[
+                        {"role": "system", "content": agent.instruction},
+                        {"role": "user", "content": user_message},
+                    ],
+                    temperature=self.temperature,
+                )
+                break
+            except Exception as e:
+                if "RateLimitError" not in type(e).__name__ or attempt == 2:
+                    raise
+                _time.sleep(5 * (attempt + 1))
         text = (completion.choices[0].message.content or "").strip()
 
         for hook in self.output_hooks:
